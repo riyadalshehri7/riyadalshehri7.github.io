@@ -99,6 +99,11 @@ section > .wrap > h2{font-size:clamp(30px,4.6vw,46px);line-height:1.05;margin:0;
 .term .top i{width:10px;height:10px;border-radius:50%;background:#4A5666}
 .term pre{margin:0;padding:14px 16px 18px;overflow-x:auto;white-space:pre}
 .term .ok{color:#7FD49B}.term .dim{color:var(--term-dim)}.term .hl{color:#FFFFFF;font-weight:600}
+.kt-next{margin-top:72px;padding-top:56px;border-top:1px solid var(--rule)}
+.shot{margin:0}
+.shot img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--rule)}
+.shot figcaption{color:var(--muted);font-size:14px;margin:10px 0 0}
+.kt p a{text-underline-offset:3px}
 @media (max-width:860px){.kt{grid-template-columns:1fr}}
 
 /* reports */
@@ -142,7 +147,7 @@ footer{border-top:1px solid var(--rule);padding:22px 0 40px;color:var(--muted);f
     <a class="me" href="#top">Riyad Alshehri</a>
     <nav aria-label="Sections">
       <a href="#certifications">Certifications</a>
-      <a href="#keeptrace">KeepTrace</a>
+      <a href="#keeptrace">Tools</a>
       <a href="#reports">Reports</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -174,8 +179,21 @@ footer{border-top:1px solid var(--rule);padding:22px 0 40px;color:var(--muted);f
   <section class="about" aria-labelledby="about-h">
     <div class="wrap">
       <h2 id="about-h">About</h2>
-      <p>I investigate what happened on a system and write it up so others can act on it. My work covers memory, disk, network and mobile evidence, from preserving and hashing the evidence to building a timeline of what the attacker did.</p>
+      <p>I focus on SOC analysis and digital forensics. On every case I start by preserving and hashing the evidence, then work through memory, disk, network and mobile artifacts to rebuild what happened step by step. I only report what the evidence proves.</p>
       <p>I'm currently in the Advanced Cyber Crime and Digital Forensics Bootcamp at Tuwaiq Academy. Before that I supervised enterprise IT and data center operations, running Windows Server and Active Directory and hardening servers and network devices. I hold a B.Sc. in Computer Engineering from Umm Al-Qura University.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="bg-h">
+    <div class="wrap">
+      <h2 id="bg-h">Background</h2>
+      <ol class="path" role="list">
+        <li class="now"><strong>Advanced Cyber Crime and Digital Forensics Bootcamp</strong><span>Tuwaiq Academy, Sep 2026 to present</span></li>
+        <li><strong>IT Unit Supervisor</strong><span>Alsalam ASC, Makkah, Nov 2024 to Sep 2025</span></li>
+        <li><strong>IT Specialist</strong><span>Alsalam ASC, Makkah, Mar 2024 to Nov 2024</span></li>
+        <li><strong>B.Sc. Computer Engineering</strong><span>Umm Al-Qura University, 2023</span></li>
+        <li><strong>Technical Support Trainee</strong><span>stc, Abha, Jun 2022 to Aug 2022</span></li>
+      </ol>
     </div>
   </section>
 
@@ -220,7 +238,7 @@ footer{border-top:1px solid var(--rule);padding:22px 0 40px;color:var(--muted);f
 
   <section id="keeptrace" aria-labelledby="kt-h">
     <div class="wrap">
-      <h2 id="kt-h">A tool I built</h2>
+      <h2 id="kt-h">Tools I built</h2>
       <div class="kt">
         <div>
           <h3>KeepTrace</h3>
@@ -272,6 +290,29 @@ Network                      Disk
 10. Case Workspace
 <span class="dim">Select:</span></pre>
         </div>
+      </div>
+      <div class="kt kt-next">
+        <div>
+          <h3>Forensic Write Blocker</h3>
+          <span class="status">Enhanced edition</span>
+          <p>A Windows tool that locks evidence against changes, then proves nothing changed with hashes before and after. I extended <a href="https://github.com/Ahmed0or1/WriteBlocker" target="_blank" rel="noopener">Ahmed Alghamdi's WriteBlocker</a>, which set a USB drive to read-only, into a full evidence-protection workflow.</p>
+          <ul>
+            <li>Protects a whole drive, a folder or a single file</li>
+            <li>A registry policy makes every USB connected afterwards mount read-only from the first second</li>
+            <li>MD5 and SHA-256 before and after, with an automatic match or mismatch result</li>
+            <li>Raw hashing of every sector on a physical disk</li>
+            <li>A Test Write button that proves the protection is active</li>
+            <li>Activity log with time, user and computer, and an exportable session report</li>
+          </ul>
+          <p class="stack">Python, PyQt6, PowerShell, Windows</p>
+          <div class="actions">
+            <a class="btn" href="https://github.com/riyadalshehri7/WriteBlocker" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+        </div>
+        <figure class="shot">
+          <a href="images/writeblocker.jpg" target="_blank" rel="noopener"><img src="images/writeblocker.jpg" width="1434" height="848" loading="lazy" alt="Forensic Write Blocker protecting a folder: hash before, write test blocked, hash after matched"></a>
+          <figcaption>Hash before, protect, write test blocked, hash after matched.</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -512,17 +553,6 @@ Network                      Disk
     </div>
   </section>
 
-  <section aria-labelledby="bg-h">
-    <div class="wrap">
-      <h2 id="bg-h">Background</h2>
-      <ol class="path" role="list">
-        <li class="now"><strong>Advanced Cyber Crime and Digital Forensics Bootcamp</strong><span>Tuwaiq Academy, Sep 2026 to present</span></li>
-        <li><strong>IT Unit Supervisor</strong><span>Alsalam ASC, Makkah, Nov 2024 to Sep 2025</span></li>
-        <li><strong>IT Specialist</strong><span>Alsalam ASC, Makkah, Mar 2024 to Nov 2024</span></li>
-        <li><strong>B.Sc. Computer Engineering</strong><span>Umm Al-Qura University, 2023</span></li>
-      </ol>
-    </div>
-  </section>
 
   <section id="contact" class="contact" aria-labelledby="ct-h">
     <div class="wrap">
