@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riyad Alshehri | SOC and DFIR</title>
+<meta name="description" content="Riyad Alshehri, cybersecurity specialist in SOC and Digital Forensics and Incident Response. Investigation reports, certifications and the KeepTrace framework.">
+<meta property="og:title" content="Riyad Alshehri | SOC and DFIR">
+<meta property="og:description" content="Investigation reports, certifications and the KeepTrace framework.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://riyadalshehri7.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23B4232A'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='15' fill='white' text-anchor='middle'%3ERA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF1F4; --panel:#FFFFFF; --ink:#152030; --muted:#566273; --rule:#C9D0D8;
+  --tape:#B4232A; --tape-ink:#FFFFFF; --term:#18212C; --term-ink:#D7E0EA; --term-dim:#8796A8;
+  --focus:#1F6FEB;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11171E; --panel:#18212B; --ink:#E5EAF0; --muted:#9AA7B5; --rule:#2B3744;
+    --tape:#D9474E; --tape-ink:#FFFFFF; --term:#0C1117; --term-ink:#D7E0EA; --term-dim:#7F8EA0; --focus:#6EA8FE;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11171E; --panel:#18212B; --ink:#E5EAF0; --muted:#9AA7B5; --rule:#2B3744;
+  --tape:#D9474E; --tape-ink:#FFFFFF; --term:#0C1117; --term-ink:#D7E0EA; --term-dim:#7F8EA0; --focus:#6EA8FE;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;font-variation-settings:"wdth" 100;font-size:17px;line-height:1.55;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+code,.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.bar .wrap{display:flex;align-items:center;gap:20px;height:56px}
+.bar .me{font-weight:700;text-decoration:none;font-variation-settings:"wdth" 112;margin-right:auto}
+.bar nav{display:flex;gap:18px}
+.bar nav a{text-decoration:none;color:var(--muted);font-size:15px}
+.bar nav a:hover{color:var(--ink)}
+.bar .cv{background:var(--ink);color:var(--paper);text-decoration:none;font-weight:600;font-size:14px;padding:7px 14px;border-radius:6px}
+@media (max-width:760px){.bar nav{display:none}}
+
+/* hero */
+.hero{padding:64px 0 0}
+.hero h1{font-size:clamp(44px,10vw,112px);line-height:.92;margin:0;font-weight:800;font-variation-settings:"wdth" 125;letter-spacing:-.02em}
+.hero .role{font-size:clamp(19px,2.6vw,25px);margin:22px 0 0;max-width:30ch;color:var(--ink);font-weight:500}
+.intake{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:40px 0 0;border-top:2px solid var(--ink)}
+.intake div{padding:14px 16px 16px 0;border-bottom:1px solid var(--rule)}
+.intake dt{font-size:13px;color:var(--muted)}
+.intake dd{margin:2px 0 0;font-weight:600}
+@media (max-width:760px){.intake{grid-template-columns:1fr 1fr}}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:16px;padding:12px 18px;border-radius:8px;border:1.5px solid var(--ink)}
+.btn.primary{background:var(--tape);border-color:var(--tape);color:var(--tape-ink)}
+.btn svg{width:18px;height:18px}
+
+/* the evidence tape */
+.tape-clip{overflow:hidden;padding:56px 0 14px;margin-bottom:-14px}
+.tape{margin:0;background:var(--tape);color:var(--tape-ink);transform:rotate(-1.4deg);width:110%;margin-left:-5%;overflow:hidden;white-space:nowrap;padding:10px 0;font-weight:700;font-size:15px;letter-spacing:.08em;font-variation-settings:"wdth" 120;box-shadow:0 1px 0 rgba(0,0,0,.15)}
+.tape span{display:inline-block;padding-right:2.4em;animation:draw .9s cubic-bezier(.2,.7,.2,1) both}
+.tape span::before{content:"";display:inline-block;width:.5em;height:.5em;background:var(--tape-ink);border-radius:50%;margin-right:1.2em;vertical-align:.1em;opacity:.85}
+@keyframes draw{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+/* sections */
+section{padding:84px 0 0}
+section > .wrap > h2{font-size:clamp(30px,4.6vw,46px);line-height:1.05;margin:0;font-weight:800;font-variation-settings:"wdth" 118;letter-spacing:-.01em}
+.lede{color:var(--muted);max-width:62ch;margin:12px 0 0}
+.about p{max-width:64ch;font-size:19px;margin:20px 0 0}
+
+/* certifications */
+.certs{list-style:none;margin:28px 0 0;padding:0;border-top:2px solid var(--ink)}
+.cert{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 200px;gap:8px 24px;align-items:center;padding:18px 0;border-bottom:1px solid var(--rule)}
+.cert-name strong{display:block;font-size:22px;font-variation-settings:"wdth" 112;line-height:1.15}
+.cert-name span{color:var(--muted);font-size:15px}
+.cert-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:15px;color:var(--muted);align-items:center}
+.cert-meta span:first-child{color:var(--ink);font-weight:600}
+.cert-act{display:flex;gap:8px;justify-content:flex-end}
+.btn-sm{text-decoration:none;font-size:14px;font-weight:600;padding:7px 12px;border-radius:6px;border:1.5px solid var(--rule);white-space:nowrap}
+.btn-sm.primary{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+@media (max-width:760px){.cert{grid-template-columns:1fr}.cert-act{justify-content:flex-start}}
+
+/* KeepTrace */
+.kt{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:40px;margin:28px 0 0;align-items:start}
+.kt h3{margin:0;font-size:28px;font-variation-settings:"wdth" 118}
+.kt .status{display:inline-block;margin:10px 0 0;font-size:14px;font-weight:600;color:var(--tape);border:1.5px solid var(--tape);border-radius:999px;padding:3px 10px}
+.kt ul{padding-left:1.1em;margin:18px 0 0}
+.kt li{margin:0 0 8px}
+.kt .stack{color:var(--muted);font-size:15px;margin:14px 0 0}
+.term{background:var(--term);color:var(--term-ink);border-radius:10px;overflow:hidden;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;line-height:1.45}
+.term .top{display:flex;gap:6px;padding:10px 12px;background:rgba(255,255,255,.05)}
+.term .top i{width:10px;height:10px;border-radius:50%;background:#4A5666}
+.term pre{margin:0;padding:14px 16px 18px;overflow-x:auto;white-space:pre}
+.term .ok{color:#7FD49B}.term .dim{color:var(--term-dim)}.term .hl{color:#FFFFFF;font-weight:600}
+@media (max-width:860px){.kt{grid-template-columns:1fr}}
+
+/* reports */
+.group{font-size:15px;font-weight:700;color:var(--tape);margin:40px 0 0;padding:0 0 10px;border-bottom:2px solid var(--ink)}
+.evidence{list-style:none;margin:0;padding:0}
+.item{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:6px 18px;padding:20px 0;border-bottom:1px solid var(--rule);align-items:start}
+.tag{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:14px;font-weight:500;color:var(--tape);padding-top:3px}
+.item h4{margin:0;font-size:20px;line-height:1.25;font-variation-settings:"wdth" 108}
+.item h4 a{text-decoration:none}
+.item h4 a:hover{text-decoration:underline;text-underline-offset:3px}
+.item p{margin:6px 0 0;max-width:68ch}
+.item .tools{font-size:15px;color:var(--muted)}
+.item .tools span{font-weight:600;color:var(--ink);margin-right:4px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 0 0;font-size:14px;color:var(--muted);align-items:center}
+.hash{font:inherit;color:var(--muted);background:none;border:1px dashed var(--rule);border-radius:5px;padding:2px 8px;cursor:pointer}
+.hash:hover{border-color:var(--muted);color:var(--ink)}
+.hash.done{border-style:solid;border-color:var(--ink);color:var(--ink)}
+.open{align-self:center;text-decoration:none;font-weight:600;font-size:14px;padding:8px 14px;border:1.5px solid var(--ink);border-radius:6px;white-space:nowrap}
+.open:hover{background:var(--ink);color:var(--paper)}
+@media (max-width:640px){.item{grid-template-columns:1fr}.tag{padding:0}.open{justify-self:start}}
+
+/* background */
+.path{list-style:none;margin:28px 0 0;padding:0;border-left:2px solid var(--ink)}
+.path li{position:relative;padding:0 0 26px 24px}
+.path li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--ink)}
+.path li.now::before{background:var(--tape);border-color:var(--tape)}
+.path strong{display:block;font-size:19px}
+.path span{color:var(--muted);font-size:15px}
+
+/* contact */
+.contact{padding:84px 0 72px}
+.contact .actions{margin-top:22px}
+footer{border-top:1px solid var(--rule);padding:22px 0 40px;color:var(--muted);font-size:14px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:8px;font-size:14px;transition:.2s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="me" href="#top">Riyad Alshehri</a>
+    <nav aria-label="Sections">
+      <a href="#certifications">Certifications</a>
+      <a href="#keeptrace">KeepTrace</a>
+      <a href="#reports">Reports</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="cv" href="cv/Riyad_Alshehri_CV.pdf" target="_blank" rel="noopener">CV</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <h1>Riyad<br>Alshehri</h1>
+      <p class="role">Cybersecurity specialist in SOC analysis and digital forensics and incident response.</p>
+      <dl class="intake">
+        <div><dt>Focus</dt><dd>SOC and DFIR</dd></div>
+        <div><dt>Certified</dt><dd>eCIR, eJPTv2, CAPT, Security+</dd></div>
+        <div><dt>Training</dt><dd>Tuwaiq Academy, in progress</dd></div>
+        <div><dt>Location</dt><dd>Saudi Arabia</dd></div>
+      </dl>
+      <div class="actions">
+        <a class="btn primary" href="cv/Riyad_Alshehri_CV.pdf" target="_blank" rel="noopener">Download CV</a>
+        <a class="btn" href="#reports">Read my reports</a>
+        <a class="btn" href="https://www.linkedin.com/in/riyad-alshehri" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/riyadalshehri7" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="tape-clip"><div class="tape" aria-hidden="true"><span>EVIDENCE OF WORK</span><span>EVERY REPORT HASHED</span><span>VERIFY EVERY CERTIFICATE</span><span>EVIDENCE OF WORK</span><span>EVERY REPORT HASHED</span><span>VERIFY EVERY CERTIFICATE</span></div></div>
+  </div>
+
+  <section class="about" aria-labelledby="about-h">
+    <div class="wrap">
+      <h2 id="about-h">About</h2>
+      <p>I investigate what happened on a system and write it up so others can act on it. My work covers memory, disk, network and mobile evidence, from preserving and hashing the evidence to building a timeline of what the attacker did.</p>
+      <p>I'm currently in the Advanced Cyber Crime and Digital Forensics Bootcamp at Tuwaiq Academy. Before that I supervised enterprise IT and data center operations, running Windows Server and Active Directory and hardening servers and network devices. I hold a B.Sc. in Computer Engineering from Umm Al-Qura University.</p>
+    </div>
+  </section>
+
+  <section id="certifications" aria-labelledby="cert-h">
+    <div class="wrap">
+      <h2 id="cert-h">Certifications</h2>
+      <p class="lede">Each Verify button opens the issuer's own record, so you can confirm it yourself.</p>
+      <ul class="certs" role="list">
+<li class="cert">
+  <div class="cert-name"><strong>eCIR</strong><span>Certified Incident Responder</span></div>
+  <div class="cert-meta"><span>INE Security</span><span>Mar 2026</span></div>
+  <div class="cert-act"><a class="btn-sm primary" href="https://certs.ine.com/73f22b7c-bdf1-4599-bebf-830c9e5218d5" target="_blank" rel="noopener">Verify</a><a class="btn-sm" href="certs/eCIR.pdf" target="_blank" rel="noopener">Certificate</a></div>
+</li>
+<li class="cert">
+  <div class="cert-name"><strong>eJPTv2</strong><span>Junior Penetration Tester</span></div>
+  <div class="cert-meta"><span>INE Security</span><span>Dec 2025</span></div>
+  <div class="cert-act"><a class="btn-sm primary" href="https://certs.ine.com/a8dc92ad-4792-4cac-8038-333d543cbfc7" target="_blank" rel="noopener">Verify</a><a class="btn-sm" href="certs/eJPTv2.pdf" target="_blank" rel="noopener">Certificate</a></div>
+</li>
+<li class="cert">
+  <div class="cert-name"><strong>CAPT</strong><span>Certified Associate Penetration Tester</span></div>
+  <div class="cert-meta"><span>Hackviser</span><span>Nov 2025</span></div>
+  <div class="cert-act"><a class="btn-sm primary" href="https://hackviser.com/verify?id=HV-CAPT-OP45G703" target="_blank" rel="noopener">Verify</a><a class="btn-sm" href="certs/CAPT.pdf" target="_blank" rel="noopener">Certificate</a></div>
+</li>
+<li class="cert">
+  <div class="cert-name"><strong>Security+</strong><span>CompTIA Security+ CE</span></div>
+  <div class="cert-meta"><span>CompTIA</span><span>Jun 2024, valid to Jun 2027</span><button class="hash" type="button" data-copy="93L7CVT6NN41QLG4" title="Copy verification code">Code <code>93L7CVT6NN41QLG4</code></button></div>
+  <div class="cert-act"><a class="btn-sm primary" href="https://verify.comptia.org/" target="_blank" rel="noopener">Verify</a><a class="btn-sm" href="certs/Security_Plus.pdf" target="_blank" rel="noopener">Certificate</a></div>
+</li>
+<li class="cert">
+  <div class="cert-name"><strong>Cybersecurity Essentials</strong><span>Course certificate</span></div>
+  <div class="cert-meta"><span>Cisco Networking Academy</span><span>Jun 2023</span></div>
+  <div class="cert-act"><a class="btn-sm" href="certs/Cisco_Cybersecurity_Essentials.pdf" target="_blank" rel="noopener">Certificate</a></div>
+</li>
+<li class="cert">
+  <div class="cert-name"><strong>Technical Support</strong><span>Training certificate</span></div>
+  <div class="cert-meta"><span>stc</span><span>Jun to Aug 2022</span></div>
+  <div class="cert-act"><a class="btn-sm" href="certs/STC_Training.pdf" target="_blank" rel="noopener">Certificate</a></div>
+</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="keeptrace" aria-labelledby="kt-h">
+    <div class="wrap">
+      <h2 id="kt-h">A tool I built</h2>
+      <div class="kt">
+        <div>
+          <h3>KeepTrace</h3>
+          <span class="status">Work in progress</span>
+          <p>One place to run forensic tools and keep a clean case around them. You open a case, add evidence, run tools against it, and KeepTrace keeps the record.</p>
+          <ul>
+            <li>Every evidence file gets a SHA-256 hash and an entry in the case</li>
+            <li>Each tool run is saved with its command, output and the evidence it used</li>
+            <li>An activity log records every action in the case</li>
+            <li>Findings export to a timeline in CSV and JSON</li>
+            <li>A tool manager for TShark, Volatility 3, YARA, The Sleuth Kit, RegRipper, ExifTool and more, installing only after you approve the command</li>
+            <li>The framework checks its own files against an Ed25519-signed manifest at start and falls back to a safe mode if anything changed</li>
+          </ul>
+          <p class="stack">Python, Linux</p>
+          <div class="actions">
+            <a class="btn" href="https://github.com/riyadalshehri7/KeepTrace" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+        </div>
+        <div class="term" role="img" aria-label="KeepTrace start screen in a terminal, showing integrity checks passed and the main menu">
+          <div class="top"><i></i><i></i><i></i></div>
+<pre><span class="dim">kali@kali:~$</span> keeptrace
+<span class="ok">[✓] Manifest signature verified.</span>
+<span class="ok">[✓] Framework integrity verified.</span>
+
+<span class="dim">                ●
+                │
+           Evidence
+                │
+●───────────────◎───────────────●
+Network                      Disk
+                │
+             Memory
+                ●</span>
+
+<span class="hl">      KEEPTRACE FRAMEWORK</span>
+  Digital Forensics &amp; Cyber Defense
+     Created by Riyad Alshehri
+
+<span class="hl">MAIN MENU</span>
+1. Network Forensics
+2. Disk &amp; File System Forensics
+3. Memory Forensics
+4. Malware Analysis
+5. Windows Forensics
+6. Linux Forensics
+7. Endpoint &amp; Incident Response
+8. Digital Investigation
+9. Tool Manager
+10. Case Workspace
+<span class="dim">Select:</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reports" aria-labelledby="rep-h">
+    <div class="wrap">
+      <h2 id="rep-h">Investigation reports</h2>
+      <p class="lede">16 reports from hands-on labs and cases, each one written by me. Every file is listed with its SHA-256, so you can check the copy you download is the one I published. Click a hash to copy it.</p>
+<h3 class="group">Memory forensics</h3>
+<ol class="evidence" role="list">
+<li class="item">
+  <span class="tag" aria-hidden="true">E-01</span>
+  <div class="item-body">
+    <h4><a href="reports/Memory_Case1_INC-8941.pdf" target="_blank" rel="noopener">Case INC-2026-DFIR-8941</a></h4>
+    <p>Windows 7 memory image. Found two user sessions, carved an image file out of RAM, pulled a hidden file with stegseek and recovered a deleted file from its resident MFT record.</p>
+    <p class="tools"><span>Tools</span> Volatility 3, stegseek, dd, strings</p>
+    <div class="meta">
+      <span>Arabic, 4 pages</span>
+      <button class="hash" type="button" data-copy="2f3932500a775eba0c3153fd15457ea1139517fd245446ad1351a0ee817dd6dd" title="Copy full SHA-256">SHA-256 <code>2f3932500a77…7dd6dd</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Memory_Case1_INC-8941.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+<li class="item">
+  <span class="tag" aria-hidden="true">E-02</span>
+  <div class="item-body">
+    <h4><a href="reports/Memory_Case2_INC-7324.pdf" target="_blank" rel="noopener">Case INC-2026-DFIR-7324</a></h4>
+    <p>Spotted a fake 32-bit NOTEPAD.EXE running from a user&#x27;s Videos folder, decoded a Base64 archive name and located the archive in memory.</p>
+    <p class="tools"><span>Tools</span> Volatility 3 (pstree, filescan), base64</p>
+    <div class="meta">
+      <span>Arabic, 4 pages</span>
+      <button class="hash" type="button" data-copy="5f6c740ce6dcbc585d1daf3e6b0bd09a256ae679e373f592b6ca073b1a59ceef" title="Copy full SHA-256">SHA-256 <code>5f6c740ce6dc…59ceef</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Memory_Case2_INC-7324.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+<li class="item">
+  <span class="tag" aria-hidden="true">E-03</span>
+  <div class="item-body">
+    <h4><a href="reports/Memory_Case3_INC-5082.pdf" target="_blank" rel="noopener">Case INC-2026-DFIR-5082</a></h4>
+    <p>Locked the evidence read-only, then traced an open KeePass database and decoded a Base64 value hidden in a cmd.exe environment variable.</p>
+    <p class="tools"><span>Tools</span> Volatility 3 (envars, filescan), chmod 444</p>
+    <div class="meta">
+      <span>Arabic, 6 pages</span>
+      <button class="hash" type="button" data-copy="187669466bd6ac349f94c0b9c820ab04cc3fe0544b782fd290f22a54c6ed38b4" title="Copy full SHA-256">SHA-256 <code>187669466bd6…ed38b4</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Memory_Case3_INC-5082.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+</ol>
+<h3 class="group">Disk and Windows forensics</h3>
+<ol class="evidence" role="list">
+<li class="item">
+  <span class="tag" aria-hidden="true">E-04</span>
+  <div class="item-body">
+    <h4><a href="reports/FTK_Cases_INC-6792_7340.pdf" target="_blank" rel="noopener">FTK cases INC-6792 and INC-7340</a></h4>
+    <p>Verified the E01 image hash, found a deleted Kali VM disk and proved the system clock was rolled back by ordering Event Log records.</p>
+    <p class="tools"><span>Tools</span> FTK Imager, PECmd, Windows Event Logs</p>
+    <div class="meta">
+      <span>Arabic, 11 pages</span>
+      <button class="hash" type="button" data-copy="34068d25b2fa72ba84c6bbb8071b47aefa5535f19e570ecde1b879196fc24c95" title="Copy full SHA-256">SHA-256 <code>34068d25b2fa…c24c95</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/FTK_Cases_INC-6792_7340.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+<li class="item">
+  <span class="tag" aria-hidden="true">E-05</span>
+  <div class="item-body">
+    <h4><a href="reports/USB_Forensics.pdf" target="_blank" rel="noopener">USB device forensics</a></h4>
+    <p>Traced a USB stick end to end: serial number from the registry, connect time from Event ID 6416, opened files from LNK files, Jump Lists and ShellBags.</p>
+    <p class="tools"><span>Tools</span> Registry, Event Viewer, JLECmd, SBECmd</p>
+    <div class="meta">
+      <span>Arabic, 3 pages</span>
+      <button class="hash" type="button" data-copy="ba2f7958d18f655f68221c8ba043b1e2380cf449940262d5fb92e7c6df8c5d38" title="Copy full SHA-256">SHA-256 <code>ba2f7958d18f…8c5d38</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/USB_Forensics.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+<li class="item">
+  <span class="tag" aria-hidden="true">E-06</span>
+  <div class="item-body">
+    <h4><a href="reports/FTK_MBR_vs_GPT.pdf" target="_blank" rel="noopener">MBR vs GPT</a></h4>
+    <p>How each partition scheme boots, how many partitions and how much disk it supports, and where it stores partition data.</p>
+    
+    <div class="meta">
+      <span>Arabic, 4 pages</span>
+      <button class="hash" type="button" data-copy="c091d30ce57d54b13cfc7ba44cee30fec68e6fb2e8c9f1839de672006060a382" title="Copy full SHA-256">SHA-256 <code>c091d30ce57d…60a382</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/FTK_MBR_vs_GPT.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+</ol>
+<h3 class="group">Network forensics</h3>
+<ol class="evidence" role="list">
+<li class="item">
+  <span class="tag" aria-hidden="true">E-07</span>
+  <div class="item-body">
+    <h4><a href="reports/Wireshark_Emotet_4.pdf" target="_blank" rel="noopener">Emotet traffic analysis 4</a></h4>
+    <p>Infected host pcap with 19,835 packets. Identified the victim, flagged traffic on non-standard ports 447 and 449 and reviewed downloaded files.</p>
+    <p class="tools"><span>Tools</span> Wireshark, capinfos</p>
+    <div class="meta">
+      <span>Arabic, 8 pages</span>
+      <button class="hash" type="button" data-copy="b0e49ea7dcde7f6b755aeaf64d01b48d96fa63c5dc9fbcdb8bd61fdeb5091514" title="Copy full SHA-256">SHA-256 <code>b0e49ea7dcde…091514</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Wireshark_Emotet_4.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+<li class="item">
+  <span class="tag" aria-hidden="true">E-08</span>
+  <div class="item-body">
+    <h4><a href="reports/Wireshark_Emotet_5.pdf" target="_blank" rel="noopener">Emotet traffic analysis 5</a></h4>
+    <p>Infected host pcap. Identified the victim from NetBIOS traffic, then worked through DNS, HTTP and TLS.</p>
+    <p class="tools"><span>Tools</span> Wireshark, capinfos</p>
+    <div class="meta">
+      <span>Arabic, 9 pages</span>
+      <button class="hash" type="button" data-copy="dc137da48876e3f4e312a6619d2772ce08c7329d4e60ef04bac55a42714e321f" title="Copy full SHA-256">SHA-256 <code>dc137da48876…4e321f</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Wireshark_Emotet_5.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+</ol>
+<h3 class="group">Mobile and app forensics</h3>
+<ol class="evidence" role="list">
+<li class="item">
+  <span class="tag" aria-hidden="true">E-09</span>
+  <div class="item-body">
+    <h4><a href="reports/Magnet_AXIOM_Android_Case.pdf" target="_blank" rel="noopener">Android case in Magnet AXIOM</a></h4>
+    <p>ASUS Android image. Rebuilt the user&#x27;s movements from calendar events, Chrome searches and Google Maps coordinates with correct timezone handling.</p>
+    <p class="tools"><span>Tools</span> Magnet AXIOM Examine</p>
+    <div class="meta">
+      <span>Arabic, 10 pages</span>
+      <button class="hash" type="button" data-copy="c714c767a7ce17f9ca8234e1f806ddfa70791d0892ff44b7f9104cdfd414a289" title="Copy full SHA-256">SHA-256 <code>c714c767a7ce…14a289</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Magnet_AXIOM_Android_Case.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+<li class="item">
+  <span class="tag" aria-hidden="true">E-10</span>
+  <div class="item-body">
+    <h4><a href="reports/Drone_Forensics.pdf" target="_blank" rel="noopener">Drone forensics</a></h4>
+    <p>Pulled DJI flight records from an iOS backup, analysed the flight in AirData and compared the flight path against the GPS data in the drone&#x27;s media.</p>
+    <p class="tools"><span>Tools</span> iMazing, AirData, Google Earth</p>
+    <div class="meta">
+      <span>Arabic, 17 pages</span>
+      <button class="hash" type="button" data-copy="2a2f457b7f75733fba1e77e3aef7fb48f38de3b67da3ed6052dec361ba4d47ee" title="Copy full SHA-256">SHA-256 <code>2a2f457b7f75…4d47ee</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Drone_Forensics.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+<li class="item">
+  <span class="tag" aria-hidden="true">E-11</span>
+  <div class="item-body">
+    <h4><a href="reports/JADX_AndroGoat_Insecure_Storage.pdf" target="_blank" rel="noopener">Android insecure storage</a></h4>
+    <p>Reverse engineered AndroGoat and showed credentials saved in plain text through SharedPreferences, with debuggable and allowBackup enabled.</p>
+    <p class="tools"><span>Tools</span> JADX-GUI</p>
+    <div class="meta">
+      <span>Arabic, 4 pages</span>
+      <button class="hash" type="button" data-copy="d268769e9eeaa4f6d793bce0c479247c1e7ddaac5d4ba3d8fb1d7f6c173f4208" title="Copy full SHA-256">SHA-256 <code>d268769e9eea…3f4208</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/JADX_AndroGoat_Insecure_Storage.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+</ol>
+<h3 class="group">Web security</h3>
+<ol class="evidence" role="list">
+<li class="item">
+  <span class="tag" aria-hidden="true">E-12</span>
+  <div class="item-body">
+    <h4><a href="reports/SQL_Injection_Mitigation.pdf" target="_blank" rel="noopener">SQL injection and the fix</a></h4>
+    <p>Bypassed a PHP login and dumped users with UNION injection on a local lab, then fixed the code with prepared statements.</p>
+    <p class="tools"><span>Tools</span> XAMPP, PHP, MySQL</p>
+    <div class="meta">
+      <span>Arabic, 2 pages</span>
+      <button class="hash" type="button" data-copy="d1f970836c43c35240a91cc9de3f31ecacff5d2a5a8014f16bb7d407da27d024" title="Copy full SHA-256">SHA-256 <code>d1f970836c43…27d024</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/SQL_Injection_Mitigation.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+</ol>
+<h3 class="group">Cryptography and ransomware</h3>
+<ol class="evidence" role="list">
+<li class="item">
+  <span class="tag" aria-hidden="true">E-13</span>
+  <div class="item-body">
+    <h4><a href="reports/Ransomware_and_Cryptography.pdf" target="_blank" rel="noopener">Ransomware and cryptography</a></h4>
+    <p>Researched real ransomware attacks such as SafePay on Ingram Micro, then decrypted AES-256-CBC files and analysed an RSA-wrapped AES key.</p>
+    <p class="tools"><span>Tools</span> OpenSSL</p>
+    <div class="meta">
+      <span>Arabic, 7 pages</span>
+      <button class="hash" type="button" data-copy="b5a840bdd5eee74591f08ef0567ddcd11b2236a1613873e3f96fccc1ec733060" title="Copy full SHA-256">SHA-256 <code>b5a840bdd5ee…733060</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Ransomware_and_Cryptography.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+<li class="item">
+  <span class="tag" aria-hidden="true">E-14</span>
+  <div class="item-body">
+    <h4><a href="reports/Advanced_Diffie_Hellman.pdf" target="_blank" rel="noopener">Diffie-Hellman key exchange</a></h4>
+    <p>Two parties agree on a shared secret, derive an AES-256 key and exchange an encrypted file, then a man-in-the-middle scenario.</p>
+    <p class="tools"><span>Tools</span> OpenSSL</p>
+    <div class="meta">
+      <span>English, 6 pages</span>
+      <button class="hash" type="button" data-copy="1927208ea8570d181382d862934394ff9bd15a44c6554633eefab055f960ad39" title="Copy full SHA-256">SHA-256 <code>1927208ea857…60ad39</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Advanced_Diffie_Hellman.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+<li class="item">
+  <span class="tag" aria-hidden="true">E-15</span>
+  <div class="item-body">
+    <h4><a href="reports/Cryptography_DES_vs_AES.pdf" target="_blank" rel="noopener">DES vs AES</a></h4>
+    <p>Encrypted and decrypted files with both and compared key size, security, speed and where each is used today.</p>
+    <p class="tools"><span>Tools</span> OpenSSL</p>
+    <div class="meta">
+      <span>English, 2 pages</span>
+      <button class="hash" type="button" data-copy="c3aa4fadf8393a683726d0dd668f0878ed5b3a9fa1b1481d7d22cf06be463298" title="Copy full SHA-256">SHA-256 <code>c3aa4fadf839…463298</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/Cryptography_DES_vs_AES.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+</ol>
+<h3 class="group">Threat intelligence</h3>
+<ol class="evidence" role="list">
+<li class="item">
+  <span class="tag" aria-hidden="true">E-16</span>
+  <div class="item-body">
+    <h4><a href="reports/APT35_Water_Infrastructure_MindMap.pdf" target="_blank" rel="noopener">Attack on water infrastructure</a></h4>
+    <p>Mind map of the CyberAv3ngers attack on Unitronics PLCs at US water facilities through default passwords, with risks and mitigations.</p>
+    
+    <div class="meta">
+      <span>English, 1 pages</span>
+      <button class="hash" type="button" data-copy="0d843237ff4fc2ca64e5c451a7218a86a14fc8417d7ef686c4a26b632532da61" title="Copy full SHA-256">SHA-256 <code>0d843237ff4f…32da61</code></button>
+    </div>
+  </div>
+  <a class="open" href="reports/APT35_Water_Infrastructure_MindMap.pdf" target="_blank" rel="noopener">Open PDF</a>
+</li>
+</ol>
+    </div>
+  </section>
+
+  <section aria-labelledby="bg-h">
+    <div class="wrap">
+      <h2 id="bg-h">Background</h2>
+      <ol class="path" role="list">
+        <li class="now"><strong>Advanced Cyber Crime and Digital Forensics Bootcamp</strong><span>Tuwaiq Academy, Sep 2026 to present</span></li>
+        <li><strong>IT Unit Supervisor</strong><span>Alsalam ASC, Makkah, Nov 2024 to Sep 2025</span></li>
+        <li><strong>IT Specialist</strong><span>Alsalam ASC, Makkah, Mar 2024 to Nov 2024</span></li>
+        <li><strong>B.Sc. Computer Engineering</strong><span>Umm Al-Qura University, 2023</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" aria-labelledby="ct-h">
+    <div class="wrap">
+      <h2 id="ct-h">Get in touch</h2>
+      <p class="lede">I'm looking for SOC and DFIR roles. The quickest way to reach me is email or LinkedIn.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:riyadalshehri777@gmail.com">riyadalshehri777@gmail.com</a>
+        <a class="btn" href="https://www.linkedin.com/in/riyad-alshehri" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="cv/Riyad_Alshehri_CV.pdf" target="_blank" rel="noopener">Download CV</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Riyad Alshehri, 2026</div>
+</footer>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  var toast=document.querySelector('.toast'),t;
+  function show(m){toast.textContent=m;toast.classList.add('show');clearTimeout(t);t=setTimeout(function(){toast.classList.remove('show')},1600)}
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.getAttribute('data-copy');
+      function ok(){b.classList.add('done');show('Copied')}
+      if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(v).then(ok,function(){fallback(v);ok()})}else{fallback(v);ok()}
+    });
+  });
+  function fallback(v){var a=document.createElement('textarea');a.value=v;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(a)}
+})();
+</script>
+</body>
+</html>
